@@ -1,6 +1,6 @@
 # S100Infrastructure
 
-Welcome to the designated repository for user feedback on ** IHO S-100 Infrastructure** systems. Your comments are invaluable to us and will be carefully reviewed by the Infra team to address technical issues and enhance functionality.
+Welcome to the designated repository for user feedback on **IHO S-100 Infrastructure** systems. Your comments are invaluable to us and will be carefully reviewed by the Infra team to address technical issues and enhance functionality.
 
 The current suite of S-100 Infra systems comprises:
 
