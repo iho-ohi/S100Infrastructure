@@ -6,7 +6,7 @@ The aim of this document is to describe how the Python script developed to autom
 
 The Python scripts will be maintained by DQWG.
 
-## Fonctionnement du script
+## How the script works
 
 The tool consists of 3 python scripts:
 
@@ -66,9 +66,6 @@ Lists of omissions and inconsistencies identified between S-101 FC and DCEG for 
 
 -   Definition
 
-```{=html}
-<!-- -->
-```
 -   Alias
 
 -   Type
@@ -77,9 +74,6 @@ In the case of an enumeration attribute, for each enumerated value:
 
 -   Label
 
-```{=html}
-<!-- -->
-```
 -   Definition
 
 -   Code
