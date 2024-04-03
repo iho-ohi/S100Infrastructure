@@ -66,9 +66,6 @@ Lists of omissions and inconsistencies identified between S-101 FC and DCEG for 
 
 -   Definition
 
-```{=html}
-<!-- -->
-```
 -   Alias
 
 -   Type
@@ -77,9 +74,6 @@ In the case of an enumeration attribute, for each enumerated value:
 
 -   Label
 
-```{=html}
-<!-- -->
-```
 -   Definition
 
 -   Code
