@@ -214,6 +214,6 @@ Same operating principle as for compare_FC_DCEG_S101_SimpleAttributes, here for 
 
 ### cross_check_S101.py
 
-Les fonctions définies dans read_files_S101.py et compare_files_S101.py sont exécutées via ce script qui permet de tout centraliser.
+The functions defined in read_files_S101.py and compare_files_S101.py are executed via this script.
 
 *N.B.: A human analysis of the elements reported by the script is still systematically necessary to identify precisely where the inconsistency lies, and whether it is indeed worth reporting.*
