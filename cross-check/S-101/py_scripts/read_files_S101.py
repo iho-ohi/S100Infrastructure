@@ -86,6 +86,7 @@ def read_FC_S101(S101_FC_filepath):
             dict_ComplexAttribute['alias'] = alias_lst
         
         dict_subAttributes = dict()
+        
         for subAttributeBinding in S100_FC_ComplexAttribute.findall(xmlns+'subAttributeBinding'):
             dict_subAttribute = dict()
             subAttrib_code = subAttributeBinding.find(xmlns+'attribute').get('ref')

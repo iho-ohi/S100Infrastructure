@@ -60,8 +60,8 @@ def compare_FC_DCEG_S101_SimpleAttributes(dict_FC_S101, dict_DCEG_S101):
             for el in [' a. ',' b. ',' c. ',' d. ',' e. ']:
                 FC_definition = FC_definition.replace(el,' ')
 
-            if len(SimpleAttribute_DCEG_dict['§1'].split('IHO Definition: ')) > 1:
-                text_para = SimpleAttribute_DCEG_dict['§1'].split('IHO Definition: ')[1]
+            if len(SimpleAttribute_DCEG_dict['§1'].split('IHO Definition: '+FC_name.upper().replace('-','–')+'. ')) > 1:
+                text_para = SimpleAttribute_DCEG_dict['§1'].split('IHO Definition: '+FC_name.upper().replace('-','–')+'. ')[1]
                 # éléments qui ne sont pas pris en compte dans la définition du FC
                 if '. (' in text_para:
                     text_para = text_para.split('. (')[0]+'.'
@@ -269,7 +269,7 @@ def compare_FC_DCEG_S101_ComplexAttributes(dict_FC_S101, dict_DCEG_S101):
 
             #__________Cohérence titre / sous-titre DCEG__________
             title_DCEG = ComplexAttribute_DCEG_dict['titre']
-            subtitle_DCEG = ComplexAttribute_DCEG_dict['§1'].split(': IHO Definition:')[0]
+            subtitle_DCEG = ComplexAttribute_DCEG_dict['§1'].split('IHO Definition: ')[1].split('.')[0]
             if not title_DCEG.split(' (')[0] == subtitle_DCEG.lower():
                 inconsistent_ComplexAttributes_DCEG_title.append((title_DCEG,subtitle_DCEG))
             
@@ -278,8 +278,8 @@ def compare_FC_DCEG_S101_ComplexAttributes(dict_FC_S101, dict_DCEG_S101):
             for el in [' a. ',' b. ',' c. ',' d. ',' e. ']:
                 FC_definition = FC_definition.replace(el,' ')
 
-            if len(ComplexAttribute_DCEG_dict['§1'].split('IHO Definition: ')) > 1:
-                text_para = ComplexAttribute_DCEG_dict['§1'].split('IHO Definition: ')[1]
+            if len(ComplexAttribute_DCEG_dict['§1'].split('IHO Definition: '+subtitle_DCEG+'. ')) > 1:
+                text_para = ComplexAttribute_DCEG_dict['§1'].split('IHO Definition: '+subtitle_DCEG+'. ')[1]
                 # éléments qui ne sont pas pris en compte dans la définition du FC
                 if '. (' in text_para:
                     text_para = text_para.split('. (')[0]+'.'
@@ -387,8 +387,8 @@ def compare_FC_DCEG_S101_Roles(dict_FC_S101, dict_DCEG_S101):
 
             #__________Cohérence titre / sous-titre DCEG__________
             title_DCEG = Role_DCEG_dict['titre']
-            subtitle_DCEG = Role_DCEG_dict['§1'].split(': IHO Definition:')[0]
-            if not title_DCEG == subtitle_DCEG:
+            subtitle_DCEG = Role_DCEG_dict['§1'].split('IHO Definition: ')[1].split('.')[0]
+            if not title_DCEG.lower() == subtitle_DCEG.lower():
                 inconsistent_Roles_DCEG_title.append((title_DCEG,subtitle_DCEG))
             
             #__________Cohérence de la définition__________
@@ -396,8 +396,8 @@ def compare_FC_DCEG_S101_Roles(dict_FC_S101, dict_DCEG_S101):
             for el in [' a. ',' b. ',' c. ',' d. ',' e. ']:
                 FC_definition = FC_definition.replace(el,' ')
 
-            if len(Role_DCEG_dict['§1'].split('IHO Definition: ')) > 1:
-                text_para = Role_DCEG_dict['§1'].split('IHO Definition: ')[1]
+            if len(Role_DCEG_dict['§1'].split('IHO Definition: '+subtitle_DCEG+'. ')) > 1:
+                text_para = Role_DCEG_dict['§1'].split('IHO Definition: '+subtitle_DCEG+'. ')[1]
                 # éléments qui ne sont pas pris en compte dans la définition du FC
                 if '. (' in text_para:
                     text_para = text_para.split('. (')[0]+'.'
@@ -464,7 +464,7 @@ def compare_FC_DCEG_S101_FeatureAssociations(dict_FC_S101, dict_DCEG_S101):
 
             #__________Cohérence titre / sous-titre DCEG__________
             title_DCEG = FeatureAssociation_DCEG_dict['titre']
-            subtitle_DCEG = FeatureAssociation_DCEG_dict['§1'].split(': IHO Definition:')[0]
+            subtitle_DCEG = FeatureAssociation_DCEG_dict['§1'].split('IHO Definition: ')[1].split('.')[0]
             if not title_DCEG.lower() == subtitle_DCEG.lower():
                 inconsistent_FeatureAssociations_DCEG_title.append((title_DCEG,subtitle_DCEG))
             
@@ -473,8 +473,8 @@ def compare_FC_DCEG_S101_FeatureAssociations(dict_FC_S101, dict_DCEG_S101):
             for el in [' a. ',' b. ',' c. ',' d. ',' e. ']:
                 FC_definition = FC_definition.replace(el,' ')
 
-            if len(FeatureAssociation_DCEG_dict['§1'].split('IHO Definition: ')) > 1:
-                text_para = FeatureAssociation_DCEG_dict['§1'].split('IHO Definition: ')[1]
+            if len(FeatureAssociation_DCEG_dict['§1'].split('IHO Definition: '+subtitle_DCEG+'. ')) > 1:
+                text_para = FeatureAssociation_DCEG_dict['§1'].split('IHO Definition: '+subtitle_DCEG+'. ')[1]
                 # éléments qui ne sont pas pris en compte dans la définition du FC
                 if '. (' in text_para:
                     text_para = text_para.split('. (')[0]+'.'
@@ -618,12 +618,13 @@ def compare_FC_DCEG_S101_InformationTypes(dict_FC_S101, dict_DCEG_S101):
                 value_ = InformationType_DCEG_dict[key_]
             ind_mul = ind_
             multiplicity = value_[:3]
-            
+
             if attribute[0]!= ' ':
                 DCEG_Attributes_lst.append(attribute)
                 DCEG_Multiplicity_lst.append(multiplicity)
+            
+            while InformationType_DCEG_dict[list(InformationType_DCEG_dict.keys())[ind_mul+1]] != 'Feature Associations':
                 
-            while InformationType_DCEG_dict[list(InformationType_DCEG_dict.keys())[ind_mul+1]][0] != '†':
                 ind_att = ind_mul+1
                 key_att = list(InformationType_DCEG_dict.keys())[ind_att]
                 attribute = InformationType_DCEG_dict[key_att]
@@ -631,12 +632,15 @@ def compare_FC_DCEG_S101_InformationTypes(dict_FC_S101, dict_DCEG_S101):
                 ind_= ind_att + 1
                 key_ = list(InformationType_DCEG_dict.keys())[ind_]
                 value_ = InformationType_DCEG_dict[key_]
+                
                 while not (value_[0] in ['0','1','*'] and value_[1]==',' and value_[2] in ['0','1','*']):
                     ind_= ind_ + 1
                     key_ = list(InformationType_DCEG_dict.keys())[ind_]
                     value_ = InformationType_DCEG_dict[key_]
                 ind_mul = ind_
                 multiplicity = value_[:3]
+                
+                
                 
                 if attribute[0]!= ' ':
                     DCEG_Attributes_lst.append(attribute)
@@ -841,8 +845,8 @@ def compare_FC_DCEG_S101_FeatureTypes(dict_FC_S101, dict_DCEG_S101):
                 DCEG_Attributes_lst.append(attribute)
                 DCEG_Multiplicity_lst.append(multiplicity)
 
-            while FeatureType_DCEG_dict[list(FeatureType_DCEG_dict.keys())[ind_mul+1]][0] != '†':
-                    
+            while FeatureType_DCEG_dict[list(FeatureType_DCEG_dict.keys())[ind_mul+1]] != 'Feature Associations':
+                
                 ind_att = ind_mul+1
                 key_att = list(FeatureType_DCEG_dict.keys())[ind_att]
                 attribute = FeatureType_DCEG_dict[key_att]
@@ -859,6 +863,7 @@ def compare_FC_DCEG_S101_FeatureTypes(dict_FC_S101, dict_DCEG_S101):
                     ind_= ind_ + 1
                     key_ = list(FeatureType_DCEG_dict.keys())[ind_]
                     value_ = FeatureType_DCEG_dict[key_]
+                    
                 ind_mul = ind_
                 multiplicity = value_[:3]
 
