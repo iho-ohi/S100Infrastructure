@@ -34,7 +34,7 @@ def compare_FC_DCEG_S101_SimpleAttributes(dict_FC_S101, dict_DCEG_S101):
     inconsistent_SimpleAttributes_code_FC = list()
     
     # Les attributs simples correspondent aux chapitres 27, 28 et 30 dans le DCEG
-    SimpleAttributes_DCEG_dict = {**dict_DCEG_S101['27'],**dict_DCEG_S101['28'],**dict_DCEG_S101['30']}
+    SimpleAttributes_DCEG_dict = {**dict_DCEG_S101['27'],**dict_DCEG_S101['28'],**dict_DCEG_S101['30'],**dict_DCEG_S101['32']}
     
     DCEG_chap_lst = list(SimpleAttributes_DCEG_dict.keys())[1:]
 #    SimpleAttribute_DCEG_lst_ = [SimpleAttributes_DCEG_dict[chap]['§1'].split(':')[0] for chap in DCEG_chap_lst]
@@ -59,9 +59,16 @@ def compare_FC_DCEG_S101_SimpleAttributes(dict_FC_S101, dict_DCEG_S101):
             FC_definition = SimpleAttribute_FC_dict['definition']
             for el in [' a. ',' b. ',' c. ',' d. ',' e. ']:
                 FC_definition = FC_definition.replace(el,' ')
-
+                
+            text_para_bool = False
             if len(SimpleAttribute_DCEG_dict['§1'].split('IHO Definition: '+FC_name.upper().replace('-','–')+'. ')) > 1:
                 text_para = SimpleAttribute_DCEG_dict['§1'].split('IHO Definition: '+FC_name.upper().replace('-','–')+'. ')[1]
+                text_para_bool = True
+            elif len(SimpleAttribute_DCEG_dict['§1'].split('IHO Definition: '+FC_name.upper()+'. ')) > 1:
+                text_para = SimpleAttribute_DCEG_dict['§1'].split('IHO Definition: '+FC_name.upper()+'. ')[1]
+                text_para_bool = True
+                
+            if text_para_bool == True:
                 # éléments qui ne sont pas pris en compte dans la définition du FC
                 if '. (' in text_para:
                     text_para = text_para.split('. (')[0]+'.'
@@ -81,6 +88,7 @@ def compare_FC_DCEG_S101_SimpleAttributes(dict_FC_S101, dict_DCEG_S101):
                 DCEG_definition = DCEG_definition.replace('…','...')
                 DCEG_definition = DCEG_definition.replace('‘',"'")
                 DCEG_definition = DCEG_definition.replace('’',"'")
+                DCEG_definition = DCEG_definition.replace('“','"')
                     
                 if not FC_definition.lower() == DCEG_definition.lower():
                     inconsistent_SimpleAttributes_definition.append((FC_name,FC_definition,DCEG_definition))
@@ -164,7 +172,10 @@ def compare_FC_DCEG_S101_SimpleAttributes(dict_FC_S101, dict_DCEG_S101):
                             inconsitent_SimpleAttributes_enum_label.append((FC_name,FC_enum_label,DCEG_enum_label))
                        
                     for i in range(len(FC_enum_label_lst)):
-                        FC_enum_def = FC_enum_def_lst[i].lower()
+                        if FC_enum_def_lst[i] is None:
+                            FC_enum_def = ""
+                        else:
+                            FC_enum_def = FC_enum_def_lst[i].lower()
                         DCEG_enum_def = DCEG_enum_def_lst[i].lower()
 
 #                        if 'seabed' in DCEG_enum_def and 'sea bed' in FC_enum_def:
@@ -506,7 +517,7 @@ def compare_FC_DCEG_S101_FeatureAssociations(dict_FC_S101, dict_DCEG_S101):
                     key_1 = list(FeatureAssociation_DCEG_dict.keys())[i+4]
                     role_1 = FeatureAssociation_DCEG_dict[key_1]
                     DCEG_Roles_lst.append(role_1.lower())
-                    key_2 = list(FeatureAssociation_DCEG_dict.keys())[i+7]
+                    key_2 = list(FeatureAssociation_DCEG_dict.keys())[i+8]
                     role_2 = FeatureAssociation_DCEG_dict[key_2]
                     DCEG_Roles_lst.append(role_2.lower()) 
             
@@ -703,7 +714,7 @@ def compare_FC_DCEG_S101_FeatureTypes(dict_FC_S101, dict_DCEG_S101):
                               **dict_DCEG_S101['17'], **dict_DCEG_S101['18'],
                               **dict_DCEG_S101['19'], **dict_DCEG_S101['20'],
                               **dict_DCEG_S101['21'], **dict_DCEG_S101['22'],
-                              **dict_DCEG_S101['23']}
+                              **dict_DCEG_S101['23'], **dict_DCEG_S101['32']}
     
     DCEG_chap_lst = [x for x in list(FeatureTypes_DCEG_dict.keys())[1:] if x[0]!='§']
     FeatureTypes_DCEG_lst_ = [FeatureTypes_DCEG_dict[chap]['titre'] for chap in DCEG_chap_lst]
@@ -713,17 +724,18 @@ def compare_FC_DCEG_S101_FeatureTypes(dict_FC_S101, dict_DCEG_S101):
     for chap_DCEG in DCEG_chap_lst:
         FeatureType_DCEG_dict = FeatureTypes_DCEG_dict[chap_DCEG]
         title_DCEG = FeatureType_DCEG_dict['titre']
-        if '§1' in FeatureType_DCEG_dict.keys():
-            if 'IHO Definition:' in FeatureType_DCEG_dict['§1']:
-                i = 2
-                para_num = '§'+str(i)
-                while FeatureType_DCEG_dict[para_num][:5] != 'S-101':
-                    i+=1
+        if title_DCEG != "drawing instruction": # Permet de ne pas considérer "drawing instruction" qui est en fait un attribut"
+            if '§1' in FeatureType_DCEG_dict.keys():
+                if 'IHO Definition:' in FeatureType_DCEG_dict['§1']:
+                    i = 2
                     para_num = '§'+str(i)
-                S101_Feature_DCEG = FeatureType_DCEG_dict[para_num].split(': ')[1].split(' (')[0]
-                if S101_Feature_DCEG[0] == ' ':
-                    S101_Feature_DCEG = S101_Feature_DCEG[1:]
-                S101_Feature_DCEG_dict[S101_Feature_DCEG.replace('–','-')] = title_DCEG.lower()
+                    while FeatureType_DCEG_dict[para_num][:5] != 'S-101':
+                        i+=1
+                        para_num = '§'+str(i)
+                    S101_Feature_DCEG = FeatureType_DCEG_dict[para_num].split(': ')[1].split(' (')[0]
+                    if S101_Feature_DCEG[0] == ' ':
+                        S101_Feature_DCEG = S101_Feature_DCEG[1:]
+                    S101_Feature_DCEG_dict[S101_Feature_DCEG.replace('–','-')] = title_DCEG.lower()
     
     for FeatureType_FC in dict_FC_S101['FeatureTypes'].keys():
         FeatureType_FC_dict = dict_FC_S101['FeatureTypes'][FeatureType_FC]
@@ -881,11 +893,11 @@ def compare_FC_DCEG_S101_FeatureTypes(dict_FC_S101, dict_DCEG_S101):
                     DCEG_Attributes_lst.append(attribute)
                     DCEG_Multiplicity_lst.append(multiplicity)
             
-            if not FC_Attributes_lst == [x.lower() for x in DCEG_Attributes_lst]:
-                diff_Attributes = list(set(FC_Attributes_lst) - set([x.lower() for x in DCEG_Attributes_lst]))
+            diff_Attributes = list(set(FC_Attributes_lst) - set([x.lower() for x in DCEG_Attributes_lst]))
+            if len(diff_Attributes) != 0:
                 inconsistent_FeatureTypes_attributes.append((FC_name,diff_Attributes,FC_Attributes_lst,DCEG_Attributes_lst))
             
-            if not FC_Multiplicity_lst == DCEG_Multiplicity_lst:
+            if not FC_Multiplicity_lst == DCEG_Multiplicity_lst and len(diff_Attributes) != 0 :
                 inconsistent_FeatureTypes_multiplicity.append((FC_name,FC_Attributes_lst,FC_Multiplicity_lst,DCEG_Multiplicity_lst))
 
             if not FC_permittedValues_lst == DCEG_permittedValues_lst:
@@ -900,18 +912,19 @@ def compare_FC_DCEG_S101_FeatureTypes(dict_FC_S101, dict_DCEG_S101):
         FeatureType_DCEG_dict = FeatureTypes_DCEG_dict[chap_DCEG]
         title_DCEG = FeatureType_DCEG_dict['titre']
         if '§1' in FeatureType_DCEG_dict.keys():
-            if 'IHO Definition:' in FeatureType_DCEG_dict['§1']:
-                subtitle_DCEG_1 = FeatureType_DCEG_dict['§1'].split('IHO Definition: ')[1].split('.')[0]
-                
-                i = 2
-                para_num = '§'+str(i)
-                while FeatureType_DCEG_dict[para_num][:5] != 'S-101':
-                    i+=1
-                    para_num = '§'+str(i)
-                subtitle_DCEG_2 = FeatureType_DCEG_dict[para_num].split(': ')[1].split(' (')[0]
+            if title_DCEG != "drawing instruction": # Permet de ne pas considérer "drawing instruction" qui est en fait un attribut"
+                if 'IHO Definition:' in FeatureType_DCEG_dict['§1']:
+                    subtitle_DCEG_1 = FeatureType_DCEG_dict['§1'].split('IHO Definition: ')[1].split('.')[0]
                     
-                if not title_DCEG.lower() == subtitle_DCEG_1.lower() or not title_DCEG.lower() == subtitle_DCEG_2.lower():
-                    inconsistent_FeatureTypes_DCEG_title.append((title_DCEG,subtitle_DCEG_1,subtitle_DCEG_2))
+                    i = 2
+                    para_num = '§'+str(i)
+                    while FeatureType_DCEG_dict[para_num][:5] != 'S-101':
+                        i+=1
+                        para_num = '§'+str(i)
+                    subtitle_DCEG_2 = FeatureType_DCEG_dict[para_num].split(': ')[1].split(' (')[0]
+                        
+                    if not title_DCEG.lower() == subtitle_DCEG_1.lower() or not title_DCEG.lower() == subtitle_DCEG_2.lower():
+                        inconsistent_FeatureTypes_DCEG_title.append((title_DCEG,subtitle_DCEG_1,subtitle_DCEG_2))
                     
     return(omission_FeatureTypes_DCEG,
            inconsistent_FeatureTypes_DCEG_title,

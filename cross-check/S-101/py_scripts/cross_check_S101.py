@@ -2,8 +2,8 @@ import read_files_S101
 import compare_files_S101
 
 
-S101_FC_filepath = "..\\..\\compared_documents\\1.3\\S-101_FeatureCatalogue_1_3_1.xml"
-S101_DCEG_filepath = "..\\..\\compared_documents\\1.3\\S-101 Annex A_DCEG_1_3_0.docx"
+S101_FC_filepath = "..\\..\\compared_documents\\1.5.0\\S-101_FC_1.5.0.xml"
+S101_DCEG_filepath = "..\\..\\compared_documents\\1.5.0\\S-101 Annex A_DCEG_Clean_1_5_0.docx"
 
 
 dict_FC_S101 = read_files_S101.read_FC_S101(S101_FC_filepath)
